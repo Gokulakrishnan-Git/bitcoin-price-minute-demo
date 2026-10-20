@@ -1,17 +1,15 @@
-# Bitcoin Price Every Minute
+# Bitcoin Price Every Five Minutes
 
-A small GitHub Actions demo that samples Coinbase's public BTC/USD spot price once per minute.
+A small GitHub Actions demo that fetches Coinbase's public BTC/USD spot price once every five minutes.
 
 ## How it works
 
-GitHub scheduled workflows run no more often than every five minutes. To demonstrate one-minute sampling, the workflow starts every five minutes and takes five readings about 60 seconds apart. GitHub can delay scheduled runs, so timing is approximate.
-
-Each completed run updates:
+The workflow is scheduled with `*/5 * * * *`. Each run fetches one price, then updates:
 
 - [Latest reading](data/latest.json)
 - [Price history](data/prices.csv)
 
-The run's **Summary** also lists all five readings. You can start a batch manually from **Actions → Bitcoin price every minute → Run workflow**.
+The run's **Summary** shows that single reading. You can also request one reading manually from **Actions → Bitcoin price every 5 minutes → Run workflow**. GitHub may delay scheduled runs, so they may not start exactly on the five-minute mark.
 
 ## Data source
 
