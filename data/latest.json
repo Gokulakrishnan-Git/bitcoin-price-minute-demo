@@ -1,0 +1,7 @@
+{
+  "status": "waiting_for_first_workflow_run",
+  "timestamp_utc": null,
+  "pair": "BTC-USD",
+  "price": null,
+  "source": "https://api.coinbase.com/v2/prices/BTC-USD/spot"
+}
