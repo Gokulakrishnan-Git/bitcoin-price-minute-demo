@@ -3,6 +3,7 @@
 
 import csv
 import json
+import os
 import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
@@ -44,7 +45,7 @@ def main():
     LATEST_PATH.write_text(json.dumps(record, indent=2) + "\n", encoding="utf-8")
 
     print(f"Bitcoin price at {timestamp}: {amount} {currency}", flush=True)
-    summary_file = __import__("os").getenv("GITHUB_STEP_SUMMARY")
+    summary_file = os.getenv("GITHUB_STEP_SUMMARY")
     if summary_file:
         with open(summary_file, "a", encoding="utf-8") as summary:
             summary.write(
