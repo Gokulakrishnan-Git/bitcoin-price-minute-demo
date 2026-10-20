@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
-"""Sample Coinbase BTC/USD spot price on a fixed one-minute cadence."""
+"""Fetch one Coinbase BTC/USD spot price for this scheduled run."""
 
 import csv
 import json
-import os
-import time
 import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
@@ -27,47 +25,33 @@ def fetch_price():
 
 
 def main():
-    samples = int(os.getenv("SAMPLES", "5"))
-    interval = int(os.getenv("INTERVAL_SECONDS", "60"))
     ROOT.joinpath("data").mkdir(exist_ok=True)
-
     if not HISTORY_PATH.exists():
         with HISTORY_PATH.open("w", newline="", encoding="utf-8") as history:
             csv.writer(history).writerow(["timestamp_utc", "currency", "price", "source"])
 
-    summary_lines = [
-        "## Bitcoin price samples",
-        "",
-        "| Sample | Time (UTC) | Price |",
-        "|---:|---|---:|",
-    ]
-    summary_file = os.getenv("GITHUB_STEP_SUMMARY")
+    timestamp = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    amount, currency = fetch_price()
+    record = {
+        "timestamp_utc": timestamp,
+        "pair": f"BTC-{currency}",
+        "price": amount,
+        "source": API_URL,
+    }
 
-    for index in range(samples):
-        started = time.monotonic()
-        timestamp = datetime.now(timezone.utc).isoformat(timespec="seconds")
-        amount, currency = fetch_price()
-        record = {
-            "timestamp_utc": timestamp,
-            "pair": f"BTC-{currency}",
-            "price": amount,
-            "source": API_URL,
-        }
+    with HISTORY_PATH.open("a", newline="", encoding="utf-8") as history:
+        csv.writer(history).writerow([timestamp, currency, amount, API_URL])
+    LATEST_PATH.write_text(json.dumps(record, indent=2) + "\n", encoding="utf-8")
 
-        with HISTORY_PATH.open("a", newline="", encoding="utf-8") as history:
-            csv.writer(history).writerow([timestamp, currency, amount, API_URL])
-        LATEST_PATH.write_text(json.dumps(record, indent=2) + "\n", encoding="utf-8")
-
-        line = f"| {index + 1} | {timestamp} | {amount} {currency} |"
-        summary_lines.append(line)
-        print(f"Sample {index + 1}/{samples}: {timestamp} — {amount} {currency}")
-
-        if index + 1 < samples:
-            time.sleep(max(0, interval - (time.monotonic() - started)))
-
+    print(f"Bitcoin price at {timestamp}: {amount} {currency}", flush=True)
+    summary_file = __import__("os").getenv("GITHUB_STEP_SUMMARY")
     if summary_file:
         with open(summary_file, "a", encoding="utf-8") as summary:
-            summary.write("\n".join(summary_lines) + "\n")
+            summary.write(
+                "## Bitcoin price\n\n"
+                "| Time (UTC) | Price |\n|---|---:|\n"
+                f"| {timestamp} | {amount} {currency} |\n"
+            )
 
 
 if __name__ == "__main__":
