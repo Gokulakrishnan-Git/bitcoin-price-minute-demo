@@ -1,7 +1,6 @@
 {
-  "status": "waiting_for_first_workflow_run",
-  "timestamp_utc": null,
+  "timestamp_utc": "2026-10-20T05:40:55+00:00",
   "pair": "BTC-USD",
-  "price": null,
+  "price": "81798.375",
   "source": "https://api.coinbase.com/v2/prices/BTC-USD/spot"
 }
