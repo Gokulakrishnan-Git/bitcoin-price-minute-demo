@@ -141,3 +141,4 @@ timestamp_utc,currency,price,source
 2026-11-16T10:58:43+00:00,USD,64502.665,https://api.coinbase.com/v2/prices/BTC-USD/spot
 2026-11-16T20:52:49+00:00,USD,64983.125,https://api.coinbase.com/v2/prices/BTC-USD/spot
 2026-11-17T03:17:50+00:00,USD,64626.595,https://api.coinbase.com/v2/prices/BTC-USD/spot
+2026-11-17T12:04:29+00:00,USD,64828.855,https://api.coinbase.com/v2/prices/BTC-USD/spot
