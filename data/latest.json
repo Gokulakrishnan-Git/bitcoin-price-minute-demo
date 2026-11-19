@@ -1,6 +1,6 @@
 {
-  "timestamp_utc": "2026-11-19T08:43:12+00:00",
+  "timestamp_utc": "2026-11-19T17:41:18+00:00",
   "pair": "BTC-USD",
-  "price": "63562.795",
+  "price": "62957.03",
   "source": "https://api.coinbase.com/v2/prices/BTC-USD/spot"
 }
